@@ -1,0 +1,62 @@
+# 代码所有权文件
+# 指定每个模块的负责人
+# 修改文件需要负责人审核
+
+# ============================================
+# 微信端专属模块（小龙女二代负责）
+# ============================================
+config.wechat.py              @wechat-agent
+app.wechat.py                 @wechat-agent
+uploads_wechat/               @wechat-agent
+output_wechat/                @wechat-agent
+packages_wechat/              @wechat-agent
+logs_wechat/                  @wechat-agent
+tasks_wechat.db               @wechat-agent
+WECHAT_BRANCH_README.md       @wechat-agent
+
+# ============================================
+# 网页端专属模块（网页端 Agent 负责）
+# ============================================
+config.web.py                 @web-agent
+app.web.py                    @web-agent
+uploads_web/                  @web-agent
+output_web/                   @web-agent
+packages_web/                 @web-agent
+logs_web/                     @web-agent
+tasks_web.db                  @web-agent
+
+# ============================================
+# 公共模块（双方共同负责）
+# ============================================
+
+# 核心功能模块
+modules/validator.py                      @wechat-agent @web-agent
+modules/citation_context_extractor.py     @wechat-agent @web-agent
+modules/semantic.py                       @wechat-agent @web-agent
+
+# 任务管理模块
+modules/task_manager/                     @wechat-agent @web-agent
+
+# 配置文件
+config.py                                 @wechat-agent @web-agent
+config.settings.py                        @wechat-agent @web-agent
+
+# 文档
+README.md                                 @wechat-agent @web-agent
+VERSION_HISTORY.md                        @wechat-agent @web-agent
+BRANCH_PROTECTION.md                      @wechat-agent @web-agent
+
+# GitHub 配置
+.github/CODEOWNERS                        @wechat-agent @web-agent
+.github/workflows/                        @wechat-agent @web-agent
+
+# ============================================
+# 说明
+# ============================================
+# @wechat-agent - 微信端 Agent（小龙女二代）
+# @web-agent    - 网页端 Agent
+#
+# 修改规则：
+# 1. 修改微信端模块 → 必须 @wechat-agent 审核
+# 2. 修改网页端模块 → 必须 @web-agent 审核
+# 3. 修改公共模块   → 必须双方都审核
