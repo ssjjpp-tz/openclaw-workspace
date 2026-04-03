@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Dict, List
 
 # 数据库路径
-DB_PATH = '/home/admin/.openclaw/workspace/paper-checker/tasks.db'
+DB_PATH = '/var/www/html/paper-checker/tasks_production.db'
 
 
 def get_db_connection():

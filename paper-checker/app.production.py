@@ -86,6 +86,7 @@ HTML_TEMPLATE = '''
         .file-upload { border: 2px dashed #e2e8f0; padding: 40px; text-align: center; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
         .file-upload:hover { border-color: #667eea; background: #f7fafc; }
         .file-upload input[type="file"] { display: none; }
+        .file-info { margin-top: 10px; color: #667eea; font-weight: bold; font-size: 14px; }
         .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 40px; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; width: 100%; transition: transform 0.2s; }
         .btn:hover { transform: translateY(-2px); }
         .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
@@ -147,7 +148,7 @@ HTML_TEMPLATE = '''
                             <div style="color: #666; margin-top: 5px;">支持格式：DOCX | 最大 20MB</div>
                             <input type="file" id="file" name="file" accept=".docx,.doc" required onchange="updateFileName()">
                         </div>
-                        <div id="fileName" style="margin-top: 10px; color: #667eea; font-weight: bold;"></div>
+                        <div id="fileInfo" style="margin-top: 10px; color: #667eea; font-weight: bold; font-size: 14px;"></div>
                     </div>
                     
                     <button type="submit" class="btn" id="submitBtn">🚀 提交检测</button>
@@ -171,9 +172,11 @@ HTML_TEMPLATE = '''
     <script>
         function updateFileName() {
             const fileInput = document.getElementById('file');
-            const fileName = fileInput.files[0]?.name;
-            if (fileName) {
-                document.getElementById('fileName').textContent = '已选择：' + fileName;
+            const file = fileInput.files[0];
+            if (file) {
+                const fileName = file.name;
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                document.getElementById('fileInfo').textContent = `已选择：${fileName} (${fileSize} MB)`;
             }
         }
         
@@ -213,13 +216,16 @@ HTML_TEMPLATE = '''
                     `;
                     resultDiv.style.display = 'block';
                     document.getElementById('uploadForm').reset();
-                    document.getElementById('fileName').textContent = '';
+                    document.getElementById('fileInfo').textContent = '';
                 } else {
                     throw new Error(data.error || '提交失败');
                 }
             } catch (error) {
                 resultDiv.className = 'error';
-                resultDiv.innerHTML = `<h3>❌ 提交失败</h3><p>${error.message}</p>`;
+                let errorMsg = error.message || '未知错误';
+                // 清理 HTML 标签，防止 XSS
+                errorMsg = errorMsg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                resultDiv.innerHTML = `<h3>❌ 提交失败</h3><p>${errorMsg}</p>`;
                 resultDiv.style.display = 'block';
             } finally {
                 btn.disabled = false;
